@@ -376,7 +376,7 @@ class Conversation extends BaseModel
             ->orderBy($this->tablePrefix.'conversations.id', 'DESC')
             ->orderBy($this->tablePrefix.'conversations.updated_at', 'DESC')
             ->distinct($this->tablePrefix.'conversations.id')
-            ->paginate($options['perPage'], [$this->tablePrefix.'participation.*', 'c.*'], $options['pageName'], $options['page']);
+            ->paginate($options['perPage'], [$this->tablePrefix.'participation.*', $this->tablePrefix.'conversations.*'], $options['pageName'], $options['page']);
     }
 
     public function unDeletedCount()
