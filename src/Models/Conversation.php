@@ -352,7 +352,7 @@ class Conversation extends BaseModel
     {
         /** @var Builder $paginator */
         $paginator = $participant->participation()
-            ->join($this->tablePrefix.'conversations', $this->tablePrefix.'participation.conversation_id', '=', $this->tablePrefix.'conversations.id')
+            ->join($this->tablePrefix.'conversations as c', $this->tablePrefix.'participation.conversation_id', '=', 'c.id')
             ->with([
                 'conversation.last_message' => function ($query) use ($participant) {
                     $query->join($this->tablePrefix.'message_notifications', $this->tablePrefix.'message_notifications.message_id', '=', $this->tablePrefix.'messages.id')
@@ -373,10 +373,10 @@ class Conversation extends BaseModel
         }
 
         return $paginator
-            ->orderBy($this->tablePrefix.'conversations.id', 'DESC')
-            ->orderBy($this->tablePrefix.'conversations.updated_at', 'DESC')
-            ->distinct($this->tablePrefix.'conversations.id')
-            ->paginate($options['perPage'], [$this->tablePrefix.'participation.*', $this->tablePrefix.'conversations.*'], $options['pageName'], $options['page']);
+            ->orderBy('c', 'DESC')
+            ->orderBy('c', 'DESC')
+            ->distinct('c.id')
+            ->paginate($options['perPage'], [$this->tablePrefix.'participation.*', 'c.*'], $options['pageName'], $options['page']);
     }
 
     public function unDeletedCount()
