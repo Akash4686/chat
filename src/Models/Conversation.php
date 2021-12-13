@@ -373,9 +373,9 @@ class Conversation extends BaseModel
         }
 
         return $paginator
-            ->orderBy('chat_conversations.updated_at', 'DESC')
-            ->orderBy('chat_conversations.id', 'DESC')
-            ->distinct('chat_conversations.id')
+            ->orderBy($this->tablePrefix.'conversations.id', 'DESC')
+            ->orderBy($this->tablePrefix.'conversations.updated_at', 'DESC')
+            ->distinct($this->tablePrefix.'conversations.id')
             ->paginate($options['perPage'], [$this->tablePrefix.'participation.*', 'c.*'], $options['pageName'], $options['page']);
     }
 
