@@ -352,7 +352,7 @@ class Conversation extends BaseModel
     {
         /** @var Builder $paginator */
         $paginator = $participant->participation()
-            ->join($this->tablePrefix.'conversations as c', $this->tablePrefix.'participation.conversation_id', '=', 'c.id')
+            ->join($this->tablePrefix.'conversations', $this->tablePrefix.'participation.conversation_id', '=', $this->tablePrefix.'conversations.id')
             ->with([
                 'conversation.last_message' => function ($query) use ($participant) {
                     $query->join($this->tablePrefix.'message_notifications', $this->tablePrefix.'message_notifications.message_id', '=', $this->tablePrefix.'messages.id')
@@ -365,11 +365,11 @@ class Conversation extends BaseModel
             ]);
 
         if (isset($options['filters']['private'])) {
-            $paginator = $paginator->where('c.private', (bool) $options['filters']['private']);
+            $paginator = $paginator->where($this->tablePrefix.'conversations.private', (bool) $options['filters']['private']);
         }
 
         if (isset($options['filters']['direct_message'])) {
-            $paginator = $paginator->where('c.direct_message', (bool) $options['filters']['direct_message']);
+            $paginator = $paginator->where($this->tablePrefix.'conversations.direct_message', (bool) $options['filters']['direct_message']);
         }
 
         return $paginator
